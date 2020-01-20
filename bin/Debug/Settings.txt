@@ -1,0 +1,9 @@
+Image
+Video
+Sound
+Text
+btn5
+btn6
+btn7
+Calendar
+Weather
