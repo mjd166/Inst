@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Instant.Class;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -71,10 +73,42 @@ namespace Instant
                 pictureBox1.Image = Image.FromFile(newp);
             }
 
-            if(selected >= _lstimg.Count)
+            if (selected >= _lstimg.Count)
             {
-                this.Close();
-                this.Dispose();
+                if (publics.dispatcherflag)
+                {
+
+                    this.pictureBox1.Image = null;
+
+                    this.Close();
+                    this.Dispose();
+
+                    for (int i = 0; i <= 99; i++)
+                    {
+                        Application.DoEvents();
+                    }
+                    foreach (var file in Directory.GetFiles(publics._Folderspecialpath))
+                    {
+                        try
+                        {
+                            File.Delete(file);
+                        }
+                        catch (Exception exdelete)
+                        {
+                            publics.WriteLogs("exdelete", exdelete.ToString());
+
+                            //throw;
+                        }
+                        publics.dispatcherflag = false;
+                    }
+                }
+                else
+                {
+                    this.Close();
+                    this.Dispose();
+
+                }
+
             }
 
 
@@ -86,8 +120,41 @@ namespace Instant
             MouseEventArgs me = (MouseEventArgs)e;
             if (me.Button == MouseButtons.Right)
             {
-                this.Close();
-                this.Dispose();
+
+                if (publics.dispatcherflag)
+                {
+
+                    this.pictureBox1.Image = null;
+
+                    this.Close();
+                    this.Dispose();
+
+                    for (int i = 0; i <= 99; i++)
+                    {
+                        Application.DoEvents();
+                    }
+                    foreach (var file in Directory.GetFiles(publics._Folderspecialpath))
+                    {
+                        try
+                        {
+                            File.Delete(file);
+                        }
+                        catch (Exception exdelete)
+                        {
+                            publics.WriteLogs("exdelete", exdelete.ToString());
+
+                            //throw;
+                        }
+                        publics.dispatcherflag = false;
+                    }
+                }
+                else
+                {
+                    this.Close();
+                    this.Dispose();
+
+                }
+
             }
             nextIMg();
         }

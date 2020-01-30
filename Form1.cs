@@ -20,7 +20,7 @@ namespace Instant
         public List<string> lsttxt = new List<string>();
         public List<string> lstVide = new List<string>();
         public List<string> lstOgg = new List<string>();
-      
+
         private bool imgFlag = false;
         private bool videoFlag = false;
         private bool soundFlag = false;
@@ -47,8 +47,9 @@ namespace Instant
 
             GetBtnsText();
             this.Location = new Point(0, 0);
-            this.Size = Screen.PrimaryScreen.WorkingArea.Size;
-            this.WindowState = FormWindowState.Maximized;
+
+            //this.Size = Screen.PrimaryScreen.WorkingArea.Size;
+            //this.WindowState = FormWindowState.Maximized;
             //dispatcherEMGMSG = new System.Threading.Timer(_ => dispatcherEMGMSG_Tick(), null, 60 * 1000, Timeout.Infinite);
         }
 
@@ -221,13 +222,13 @@ namespace Instant
                         if (imgFlag)
                         {
 
-                            PlayImg();
+                            PlayImg(0);
                             lstJpg.Clear();
                             imgFlag = false;
                         }
                         else if (txtFlag)
                         {
-                            playText();
+                            playText(0);
                             txtFlag = false;
 
                         }
@@ -257,12 +258,48 @@ namespace Instant
             }
         }
 
-        private void playText()
+        private void playText(int flag)
         {
             try
             {
-                TextViewer viewer = new TextViewer(lsttxt);
-                viewer.ShowDialog();
+                if (flag == 1)
+                {
+                    var number = Application.OpenForms;
+                    if (!publics.EMGFlag)
+                    {
+                        foreach (Form f in number)
+                        {
+                            try
+                            {
+                                if (f.Name != "Form1")
+                                {
+                                    Task.Factory.StartNew(() =>
+                                    {
+                                        this.BeginInvoke(new Action(() =>
+                                        {
+                                            f.Close();
+                                            f.Dispose();
+                                        }));
+                                    });
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                publics.WriteLogs("ex on close open form", ex.ToString());
+                                return;
+                            }
+                        }
+                    }
+                    publics.dispatcherflag = true;
+                    TextViewer viewer = new TextViewer(lsttxt);
+                    viewer.ShowDialog();
+                }
+                else
+                {
+                    TextViewer viewer = new TextViewer(lsttxt);
+                    viewer.ShowDialog();
+                }
+
             }
             catch (Exception ex)
             {
@@ -294,13 +331,10 @@ namespace Instant
                                             f.Dispose();
                                         }));
                                     });
-
-
                                 }
                             }
                             catch (Exception ex)
                             {
-
                                 publics.WriteLogs("ex on close open form", ex.ToString());
                                 return;
                             }
@@ -326,9 +360,18 @@ namespace Instant
                 }
                 else
                 {
+                    try
+                    {
+                        VoicePly play = new VoicePly(lstOgg);
+                        play.ShowDialog();
+                    }
+                    catch (Exception)
+                    {
 
-                    VoicePly play = new VoicePly(lstOgg);
-                    play.ShowDialog();
+                      // Task.Factory.StartNew(=>)
+                    }
+
+
                 }
 
 
@@ -381,8 +424,14 @@ namespace Instant
                                           {
                                               this.BeginInvoke(new Action(() =>
                                               {
-                                                  Video play = new Video(lstVide);
-                                                  play.ShowDialog();
+                                               
+                                                  frmVideo play = new frmVideo(lstVide);
+                                                  for(int i = 0; i <= 39; i++)
+                                                  {
+                                                      Application.DoEvents();
+                                                  }
+                                                  this.Hide();
+                                                  play.Show();
                                               }));
                                           }));
                     }
@@ -393,7 +442,14 @@ namespace Instant
                     {
                         this.BeginInvoke(new Action(() =>
                         {
-                            Video play = new Video(lstVide); play.ShowDialog();
+                            frmVideo play = new frmVideo(lstVide);
+                            for (int i = 0; i <= 39; i++)
+                            {
+                                Application.DoEvents();
+                            }
+                            this.Hide();
+                            Thread.Sleep(500);
+                            play.Show();
                         }));
                     }));
 
@@ -409,18 +465,46 @@ namespace Instant
             }
         }
 
-        private void PlayImg()
+        private void PlayImg(int flag)
         {
             try
             {
+                if (flag == 1)
+                {
+                    var number = Application.OpenForms;
+                    if (!publics.EMGFlag)
+                        foreach (Form f in number)
+                        {
+                            try
+                            {
+                                if (f.Name != "Form1")
+                                {
+                                    Task.Factory.StartNew(() =>
+                                    {
+                                        this.BeginInvoke(new Action(() =>
+                                        {
+                                            f.Close();
+                                            f.Dispose();
+                                        }));
+                                    });
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                publics.WriteLogs("ex on close open form", ex.ToString());
+                                return;
+                            }
+                        }
 
-                frmIMGshow frm = new frmIMGshow(lstJpg);
-
-                frm.ShowDialog();
-
-
-
-                //frm.ShowDialog();
+                    publics.dispatcherflag = true;
+                    frmIMGshow frm = new frmIMGshow(lstJpg);
+                    frm.ShowDialog();
+                }
+                else
+                {
+                    frmIMGshow frm = new frmIMGshow(lstJpg);
+                    frm.ShowDialog();
+                }
             }
             catch (Exception ex)
             {
@@ -630,10 +714,7 @@ namespace Instant
             return font.Size * ratio;
         }
 
-        private void Form1_MouseMove(object sender, MouseEventArgs e)
-        {
-
-        }
+        
 
         private void btn1_MouseMove(object sender, MouseEventArgs e)
         {
@@ -653,14 +734,14 @@ namespace Instant
 
                 if (imgFlag)
                 {
-                    PlayImg();
+                    PlayImg(1);
                     imgFlag = false;
                     publics.EMGFlag = true;
 
                 }
                 else if (txtFlag)
                 {
-                    playText();
+                    playText(1);
                     txtFlag = false; publics.EMGFlag = true;
                 }
                 else if (videoFlag)
@@ -677,7 +758,7 @@ namespace Instant
 
 
 
-               
+
 
             }
             catch (Exception)
@@ -686,5 +767,7 @@ namespace Instant
                 //throw;
             }
         }
+
+       
     }
 }

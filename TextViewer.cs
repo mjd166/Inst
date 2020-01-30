@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Instant.Class;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -64,19 +65,24 @@ namespace Instant
             _text = File.ReadAllText(_lstFiles[0]);
             _text = _text.Trim();
             //_text = _text.Replace(" ", "");
-            
+
             _text = _text.Replace('\n', ' ');
             _text = _text.Replace('\r', ' ');
 
             AddTolist(_text);
-           
+
 
         }
 
 
         private void AddTolist(string text)
-        {
+         {
+            lstwords.Clear();
+           text = text.Replace('\n', ' ');
+            text = text.Replace('.', ' ');
+            text = text.Replace('\r', ' ');
             var words = text.Split(' ');
+
             int i = 0;
             foreach (string s in words)
             {
@@ -90,7 +96,7 @@ namespace Instant
         }
         private void TextViewer_Load(object sender, EventArgs e)
         {
-            label1.Font = new Font(label1.Font.FontFamily, (tableLayoutPanel1.Height / 6) , FontStyle.Regular);
+            label1.Font = new Font(label1.Font.FontFamily, (tableLayoutPanel1.Height / 6), FontStyle.Regular);
             label2.Font = new Font(label2.Font.FontFamily, (tableLayoutPanel1.Height / 6), FontStyle.Regular);
 
             if (lstwords.Count > 1)
@@ -98,7 +104,7 @@ namespace Instant
                 if (lstwords[0] != "")
                     label1.Text = lstwords[0];
 
-                
+
                 label2.Text = lstwords[1];
 
             }
@@ -106,7 +112,6 @@ namespace Instant
 
             //SizeLabelFont(label1);
         }
-
 
 
         private void Nextitem()
@@ -121,10 +126,33 @@ namespace Instant
                         label1.Text = lstwords[selected];
                     else
                     {
-                        if (selectedFiles > _lstFiles.Count - 1)
+                        if (selectedFiles > _lstFiles.Count )
                         {
-                            this.Dispose();
-                            this.Close();
+                            if (publics.dispatcherflag)
+                            {
+                                this.Dispose();
+                                this.Close();
+                                foreach (var file in Directory.GetFiles(publics._Folderspecialpath))
+                                {
+                                    try
+                                    {
+                                        File.Delete(file);
+                                    }
+                                    catch (Exception exdelete)
+                                    {
+                                        publics.WriteLogs("exdelete", exdelete.ToString());
+
+                                        //throw;
+                                    }
+                                    publics.dispatcherflag = false;
+                                }
+                            }
+                            else
+                            {
+                                this.Dispose();
+                                this.Close();
+                            }
+
                         }
                         else
                         {
@@ -146,10 +174,35 @@ namespace Instant
                     else
                     {
                         label2.Text = "";
-                        if (selectedFiles > _lstFiles.Count - 1)
+                        return;
+                        if (selectedFiles > _lstFiles.Count )
                         {
-                            this.Close();
-                            this.Close();
+                            if (publics.dispatcherflag)
+                            {
+
+                                this.Close();
+                                this.Close();
+                                foreach (var file in Directory.GetFiles(publics._Folderspecialpath))
+                                {
+                                    try
+                                    {
+                                        File.Delete(file);
+                                    }
+                                    catch (Exception exdelete)
+                                    {
+                                        publics.WriteLogs("exdelete", exdelete.ToString());
+
+                                        //throw;
+                                    }
+                                    publics.dispatcherflag = false;
+                                }
+                            }
+                            else
+                            {
+                                this.Close();
+                                this.Close();
+                            }
+
                         }
                         else
                         {
@@ -164,11 +217,34 @@ namespace Instant
                 }
                 else
                 {
-                    if (selectedFiles > _lstFiles.Count - 1)
+                    selectedFiles++;
+                    if (selectedFiles >= _lstFiles.Count )
                     {
-                        this.Close();
-                        this.Close();
+                        if (publics.dispatcherflag)
+                        {
 
+                            this.Close();
+                            this.Close();
+                            foreach (var file in Directory.GetFiles(publics._Folderspecialpath))
+                            {
+                                try
+                                {
+                                    File.Delete(file);
+                                }
+                                catch (Exception exdelete)
+                                {
+                                    publics.WriteLogs("exdelete", exdelete.ToString());
+
+                                    //throw;
+                                }
+                                publics.dispatcherflag = false;
+                            }
+                        }
+                        else
+                        {
+                            this.Close();
+                            this.Close();
+                        }
                     }
                     else
                     {
@@ -184,8 +260,9 @@ namespace Instant
             }
             catch (Exception exNext)
             {
-
+                selected++;
                 Class.publics.WriteLogs("exNetx item on TextViewer", exNext.ToString());
+                return;
 
             }
         }
@@ -247,9 +324,35 @@ namespace Instant
             MouseEventArgs me = (MouseEventArgs)e;
             if (me.Button == MouseButtons.Right)
             {
-                this.Close();
-                this.Dispose();
+                if (publics.dispatcherflag)
+                {
+                    this.Close();
+                    this.Dispose();
+
+                    foreach (var file in Directory.GetFiles(publics._Folderspecialpath))
+                    {
+                        try
+                        {
+                            File.Delete(file);
+                        }
+                        catch (Exception exdelete)
+                        {
+                            publics.WriteLogs("exdelete", exdelete.ToString());
+
+                            //throw;
+                        }
+                        publics.dispatcherflag = false;
+                    }
+                }
+                else
+                {
+                    this.Close();
+                    this.Dispose();
+
+                }
+
             }
+
             Nextitem();
         }
 
@@ -267,7 +370,7 @@ namespace Instant
                 float fontSize = NewFontSize(e.Graphics, btn.Size, btn.Font, btn.Text);
 
                 // set font with Font Class and the returned Size from NewFontSize();
-                Font f = new Font("B Nazanin", fontSize , FontStyle.Regular);
+                Font f = new Font("B Nazanin", fontSize+30, FontStyle.Bold);
                 btn.Font = f;
             }
         }

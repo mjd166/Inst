@@ -63,7 +63,7 @@ namespace Instant
                     //axVLCPlugin21.playlist.stop();
                     // axVLCPlugin21.Dispose();
                     //Thread.Sleep(3000);
-                    for (int i = 0; i <= 99999; i++)
+                    for (int i = 0; i <= 89; i++)
                     {
                         Application.DoEvents();
                         Application.DoEvents();
@@ -110,11 +110,11 @@ namespace Instant
 
                 //axVLCPlugin21.playlist.stop();
 
-                for (int i = 0; i <= 99999; i++)
-                {
-                    Application.DoEvents();
-                    Application.DoEvents();
-                }
+                //for (int i = 0; i <= 99999; i++)
+                //{
+                //    Application.DoEvents();
+                //    Application.DoEvents();
+                //}
 
                 // axVLCPlugin21.playlist.next();
 
@@ -284,7 +284,7 @@ namespace Instant
                     publics.playflag = false;
                     this.Close();
                     this.Dispose();
-                   
+
 
                 }
                 catch (Exception)
@@ -383,24 +383,28 @@ namespace Instant
             {
                 if (publics.dispatcherflag)
                 {
-                    if (publics.dispatcherflag)
+                    this.Close();
+                    this.Dispose();
+                    for (int i = 0; i <= 99; i++)
                     {
-                        foreach (var file in Directory.GetFiles(publics._Folderspecialpath))
-                        {
-                            try
-                            {
-                                File.Delete(file);
-                            }
-                            catch (Exception exdelete)
-                            {
-                                publics.WriteLogs("exdelete", exdelete.ToString());
+                        Application.DoEvents();
 
-                                //throw;
-                            }
-                            publics.dispatcherflag = false;
-
-                        }
                     }
+                    foreach (var file in Directory.GetFiles(publics._Folderspecialpath))
+                    {
+                        try
+                        {
+                            File.Delete(file);
+                        }
+                        catch (Exception exdelete)
+                        {
+                            publics.WriteLogs("exdelete", exdelete.ToString());
+
+                            //throw;
+                        }
+                        publics.dispatcherflag = false;
+                    }
+                   
                 }
                 this.Close();
                 this.Dispose();
@@ -417,7 +421,7 @@ namespace Instant
                         {
                             this.Close();
                             this.Dispose();
-                            for (int i = 0; i <= 9999999; i++)
+                            for (int i = 0; i <= 99; i++)
                             {
                                 Application.DoEvents();
 

@@ -17,6 +17,8 @@ namespace Instant
     public partial class Video : Form
     {
         List<string> _lstplayback = new List<string>();
+
+       
         int selected = 0;
         public Video()
         {
@@ -25,25 +27,40 @@ namespace Instant
         public Video(List<string> lstVideo)
         {
             InitializeComponent();
+            //this.WindowState = FormWindowState.Maximized;
+            axVLCPlugin21.AutoPlay = true;
             _lstplayback = lstVideo;
-            axVLCPlugin22.AutoPlay = true;
-            axVLCPlugin22.MediaPlayerEndReached += AxVLCPlugin21_MediaPlayerEndReached;
 
-            if (publics.dispatcherflag)
-                this.axVLCPlugin22.MouseDownEvent += new AxAXVLC.DVLCEvents_MouseDownEventHandler(this.axVLCPlugin22_MouseDownEvent);
+
+            axVLCPlugin21.MediaPlayerEndReached += AxVLCPlugin21_MediaPlayerEndReached;
+            //if (publics.dispatcherflag)
+            this.axVLCPlugin21.MouseDownEvent += AxVLCPlugin21_MouseDownEvent;
+
+            this.axVLCPlugin21.MediaPlayerPlaying += AxVLCPlugin21_MediaPlayerPlaying;
+
+        }
+
+    
+
+        private void AxVLCPlugin21_MediaPlayerPlaying(object sender, EventArgs e)
+        {          Application.DoEvents();
+        }
+
+        private void AxVLCPlugin21_MouseDownEvent(object sender, DVLCEvents_MouseDownEvent e)
+        {
+            MessageBox.Show("oa");
         }
 
         private void AxVLCPlugin21_MediaPlayerEndReached(object sender, EventArgs e)
         {
             try
             {
-
                 if (selected >= _lstplayback.Count - 1)
                 {
                     //axVLCPlugin21.playlist.stop();
                     // axVLCPlugin21.Dispose();
                     //Thread.Sleep(3000);
-                    for (int i = 0; i <= 999999; i++)
+                    for (int i = 0; i <= 99; i++)
                     {
                         Application.DoEvents();
                         Application.DoEvents();
@@ -51,7 +68,7 @@ namespace Instant
                     }
 
 
-                    axVLCPlugin22.playlist.items.clear();
+                    axVLCPlugin21.playlist.items.clear();
                     _lstplayback.Clear();
 
                     this.Close();
@@ -75,47 +92,39 @@ namespace Instant
                         }
                     }
 
-                 
+
                     publics.playflag = false;
                 }
                 //axVLCPlugin21.playlist.playItem(selected);
                 //axVLCPlugin21.playlist.stop();
-
-                for (int i = 0; i <= 999999; i++)
+                for (int i = 0; i <= 99; i++)
                 {
                     Application.DoEvents();
                     Application.DoEvents();
                 }
-
                 // axVLCPlugin21.playlist.next();
-
-
                 //axVLCPlugin21.playlist.playItem(selected);
-
-
                 selected += 1;
-
-
-
-
             }
             catch (Exception)
             {
                 //throw;
             }
         }
+
         private void Video_Load(object sender, EventArgs e)
         {
+
+
+
             foreach (var s in _lstplayback)
             {
                 string pre = "file:///";
                 string m = s;
                 m = m.Replace('\\', '/');
-
                 string filename = Path.GetFileName(s);
                 pre += m;
-                axVLCPlugin22.playlist.add(pre);
-
+                axVLCPlugin21.playlist.add(pre);
             }
         }
         private void Video_Shown(object sender, EventArgs e)
@@ -124,19 +133,20 @@ namespace Instant
             {
                 this.BeginInvoke(new Action(() =>
                 {
-                    axVLCPlugin22.playlist.playItem(selected);
+                    axVLCPlugin21.playlist.playItem(selected);
                 }));
             });
+            axVLCPlugin21.MediaPlayerMediaChanged += AxVLCPlugin21_MediaPlayerMediaChanged;
 
-            axVLCPlugin22.MediaPlayerMediaChanged += AxVLCPlugin21_MediaPlayerMediaChanged;
-            // 
+
+
         }
         private void AxVLCPlugin21_MediaPlayerMediaChanged(object sender, EventArgs e)
         {
             selected++;
             if (selected > _lstplayback.Count)
             {
-                for (int i = 0; i <= 999999; i++)
+                for (int i = 0; i <= 99; i++)
                 {
                     Application.DoEvents(); Application.DoEvents();
                 }
@@ -155,7 +165,6 @@ namespace Instant
                             //throw;
                         }
                         publics.dispatcherflag = false;
-
                     }
                 }
                 this.Close();
@@ -164,41 +173,15 @@ namespace Instant
             }
         }
 
-        private void axVLCPlugin21_Enter(object sender, EventArgs e)
-        {
-        }
 
-        private void axVLCPlugin21_ClickEvent(object sender, EventArgs e)
-        {
-            MouseEventArgs me = (MouseEventArgs)e;
-            if (me.Button == MouseButtons.Right)
-            {
-                this.Close();
-                this.Dispose();
-                publics.playflag = false;
-            }
-            Task.Factory.StartNew(() =>
-            {
-                this.BeginInvoke(new Action(() =>
-                {
-                    playnext(selected);
-                }));
-            });
-        }
 
         private void playnext(int selected)
         {
-
-
-
-
             if (selected >= _lstplayback.Count)
             {
-                for (int i = 0; i <= 999999; i++)
+                for (int i = 0; i <= 89; i++)
                 {
                     Application.DoEvents(); Application.DoEvents();
-
-
                 }
                 try
                 {
@@ -275,7 +258,7 @@ namespace Instant
                 {
                     // Thread.Sleep(1500);
 
-                    axVLCPlugin22.playlist.next();
+                    axVLCPlugin21.playlist.next();
 
                 }
                 catch (Exception)
@@ -300,37 +283,117 @@ namespace Instant
             }
         }
 
-        private void axVLCPlugin22_ClickEvent(object sender, EventArgs e)
+
+        private void Video_MouseDown(object sender, MouseEventArgs e)
         {
-            //Task.Factory.StartNew(() =>
+
+
+
+            //MouseEventArgs me = e;
+
+            //if (me.Button == MouseButtons.Right)
             //{
-            //    this.BeginInvoke(new Action(() =>
+
+            //    for (int i = 0; i <= 99; i++)
             //    {
-            //        playnext(selected);
+            //        Application.DoEvents();
+            //        //Application.DoEvents();
+            //    }
+            //    this.Close();
+            //    this.Dispose();
+            //    if (publics.dispatcherflag)
+            //    {
+            //        foreach (var file in Directory.GetFiles(publics._Folderspecialpath))
+            //        {
+            //            try
+            //            {
+            //                File.Delete(file);
+            //            }
+            //            catch (Exception exdelete)
+            //            {
+            //                publics.WriteLogs("exdelete", exdelete.ToString());
+
+            //                //throw;
+            //            }
+            //            publics.dispatcherflag = false;
+
+            //        }
+            //    }
+
+
+            //    publics.playflag = false;
+            //    return;
+            //}
+            //else
+            //{
+
+            //    if (selected >= _lstplayback.Count)
+            //    {
+            //        for (int i = 0; i <= 99; i++)
+            //        {
+            //            Application.DoEvents();
+            //            Application.DoEvents();
+            //        }
+
+            //        this.Close();
+            //        this.Dispose();
+            //        foreach (var file in Directory.GetFiles(publics._Folderspecialpath))
+            //        {
+            //            try
+            //            {
+            //                File.Delete(file);
+            //            }
+            //            catch (Exception exdelete)
+            //            {
+            //                publics.WriteLogs("exdelete", exdelete.ToString());
+
+            //                //throw;
+            //            }
+            //            publics.dispatcherflag = false;
+
+            //        }
+            //        return;
+            //    }
+
+
+
+
+            //    Task.WaitAll(
+            //    Task.Factory.StartNew(() =>
+            //    {
+            //        this.BeginInvoke(new Action(() =>
+            //        {
+            //            playnext(selected);
+            //        }));
             //    }));
-            //});
+
+
+
+            //}
         }
 
-        private async void axVLCPlugin22_MouseDownEvent(object sender, DVLCEvents_MouseDownEvent e)
+
+
+        private void functon(object sender, DVLCEvents_MouseDownEvent e)
         {
-
-
-            Thread.Sleep(1000);
 
             AxAXVLC.DVLCEvents_MouseDownEvent me = e;
 
             if (me.button == 2)
             {
-
-                for (int i = 0; i <= 999999; i++)
-                {
-                    Application.DoEvents();
-                    Application.DoEvents();
-                }
-                this.Close();
-                this.Dispose();
                 if (publics.dispatcherflag)
                 {
+                    for (int i = 0; i <= 20; i++)
+                    {
+                        Application.DoEvents();
+                    }
+                    this.Close();
+                    this.Dispose();
+                    for (int i = 0; i <= 99; i++)
+                    {
+                        Application.DoEvents();
+
+                    }
                     foreach (var file in Directory.GetFiles(publics._Folderspecialpath))
                     {
                         try
@@ -344,60 +407,72 @@ namespace Instant
                             //throw;
                         }
                         publics.dispatcherflag = false;
-
                     }
-                }
 
-              
-                publics.playflag = false;
-                return;
+                }
+                this.Close();
+                this.Dispose();
             }
             else
             {
 
-                if (selected >= _lstplayback.Count)
+                try
                 {
-                    for (int i = 0; i <= 999999; i++)
+
+                    if (selected >= _lstplayback.Count)
                     {
-                        Application.DoEvents();
-                        Application.DoEvents();
+                        if (publics.dispatcherflag)
+                        {
+                            this.Close();
+                            this.Dispose();
+                            for (int i = 0; i <= 99; i++)
+                            {
+                                Application.DoEvents();
+
+                            }
+                            foreach (var file in Directory.GetFiles(publics._Folderspecialpath))
+                            {
+                                try
+                                {
+                                    File.Delete(file);
+                                }
+                                catch (Exception exdelete)
+                                {
+                                    publics.WriteLogs("exdelete", exdelete.ToString());
+
+                                    //throw;
+                                }
+                                publics.dispatcherflag = false;
+
+                            }
+                        }
+
+
+
+                        return;
                     }
 
-                    this.Close();
-                    this.Dispose();
-                    foreach (var file in Directory.GetFiles(publics._Folderspecialpath))
+                    Task.WaitAll(Task.Factory.StartNew(() =>
                     {
-                        try
+                        this.BeginInvoke(new Action(() =>
                         {
-                            File.Delete(file);
-                        }
-                        catch (Exception exdelete)
-                        {
-                            publics.WriteLogs("exdelete", exdelete.ToString());
+                            playnext(selected);
+                        }));
+                    }));
+                }
+                catch (Exception)
+                {
 
-                            //throw;
-                        }
-                        publics.dispatcherflag = false;
-
-                    }
-                    return;
+                    // throw;
                 }
 
 
 
-
-             
-
-                Task.Factory.StartNew(() =>
-                    {
-                  this.BeginInvoke(new Action(() =>
-                  {
-                      playnext(selected);
-                  }));
-              });
-
-
             }
         }
+
+       
+
+       
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Instant
 {
-    partial class Video
+    partial class form
     {
         /// <summary>
         /// Required designer variable.
@@ -28,36 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Video));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(form));
             this.axVLCPlugin21 = new AxAXVLC.AxVLCPlugin2();
             ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin21)).BeginInit();
             this.SuspendLayout();
             // 
             // axVLCPlugin21
             // 
-            this.axVLCPlugin21.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.axVLCPlugin21.Enabled = true;
-            this.axVLCPlugin21.Location = new System.Drawing.Point(12, 69);
+            this.axVLCPlugin21.Location = new System.Drawing.Point(284, 80);
             this.axVLCPlugin21.Name = "axVLCPlugin21";
             this.axVLCPlugin21.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axVLCPlugin21.OcxState")));
-            this.axVLCPlugin21.Size = new System.Drawing.Size(1372, 608);
-            this.axVLCPlugin21.TabIndex = 1;
-            this.axVLCPlugin21.MouseDownEvent += new AxAXVLC.DVLCEvents_MouseDownEventHandler(this.AxVLCPlugin21_MouseDownEvent);
+            this.axVLCPlugin21.Size = new System.Drawing.Size(918, 541);
+            this.axVLCPlugin21.TabIndex = 0;
+            this.axVLCPlugin21.MouseDownEvent += new AxAXVLC.DVLCEvents_MouseDownEventHandler(this.axVLCPlugin21_MouseDownEvent);
             // 
-            // Video
+            // form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1396, 746);
+            this.ClientSize = new System.Drawing.Size(1443, 703);
             this.Controls.Add(this.axVLCPlugin21);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Video";
-            this.Text = "Video";
-            this.Load += new System.EventHandler(this.Video_Load);
-            this.Shown += new System.EventHandler(this.Video_Shown);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Video_MouseDown);
+            this.Name = "form";
+            this.Text = "form";
+            this.Load += new System.EventHandler(this.form_Load);
+            this.Shown += new System.EventHandler(this.form_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin21)).EndInit();
             this.ResumeLayout(false);
 
