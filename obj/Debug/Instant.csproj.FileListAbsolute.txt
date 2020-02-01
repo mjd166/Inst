@@ -1123,10 +1123,7 @@ D:\MJD\InstantProject\Instant\bin\Debug\Vlc.DotNet.Core.dll
 D:\MJD\InstantProject\Instant\bin\Debug\Vlc.DotNet.Core.Interops.dll
 D:\MJD\InstantProject\Instant\bin\Debug\Vlc.DotNet.Forms.dll
 D:\MJD\InstantProject\Instant\bin\Debug\WeatherNet.dll
-D:\MJD\InstantProject\Instant\bin\Debug\Interop.AXVLC.dll
-D:\MJD\InstantProject\Instant\bin\Debug\AxInterop.AXVLC.dll
 D:\MJD\InstantProject\Instant\obj\Debug\Interop.AXVLC.dll
-D:\MJD\InstantProject\Instant\obj\Debug\AxInterop.AXVLC.dll
 D:\MJD\InstantProject\Instant\obj\Debug\Instant.csproj.ResolveComReference.cache
 D:\MJD\InstantProject\Instant\obj\Debug\Instant.DateTimeForm.resources
 D:\MJD\InstantProject\Instant\obj\Debug\Instant.DateTimeForm2.resources

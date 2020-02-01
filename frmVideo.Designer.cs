@@ -41,8 +41,7 @@
             this.axVLCPlugin21.Name = "axVLCPlugin21";
             this.axVLCPlugin21.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axVLCPlugin21.OcxState")));
             this.axVLCPlugin21.Size = new System.Drawing.Size(1553, 638);
-            this.axVLCPlugin21.TabIndex = 1;
-           
+            this.axVLCPlugin21.TabIndex = 0;
             this.axVLCPlugin21.MouseDownEvent += new AxAXVLC.DVLCEvents_MouseDownEventHandler(this.axVLCPlugin21_MouseDownEvent_1);
             // 
             // frmVideo
@@ -63,8 +62,10 @@
 
         }
 
+        private AxAXVLC.AxVLCPlugin2 axVLCPlugin21;
+
         #endregion
 
-        private AxAXVLC.AxVLCPlugin2 axVLCPlugin21;
+        // private AxAXVLC.AxVLCPlugin2 axVLCPlugin21;
     }
 }
